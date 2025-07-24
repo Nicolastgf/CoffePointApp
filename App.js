@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>dsadsadsadsa</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +13,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Platform.OS === 'ios' ? '#e20a0aff' : '#ffffff', // ← 👈 color de fondo distinto según plataforma
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: Platform.OS === 'ios' ? 50 : 20, // ← 👈 padding distinto según plataforma
   },
 });
