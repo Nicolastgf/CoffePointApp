@@ -8,7 +8,10 @@ import PuntosBadge from '../components/puntos/PuntosBadge';
 import BarraPuntos from '../components/puntos/BarraPuntos';
 import PromoCarousel from '../components/promociones/PromoCarousel';
 import PromocionesCard from '../components/promociones/PromocionesCard';
-const HomeScreen = () => {
+
+//LAZY LOAD ---> CARGA PEREZOSA
+//CASCADIE CODE --> CARGA DE ENTRADA
+const HomeScreen =  () => {
     const navigation = useNavigation();
 
     return (

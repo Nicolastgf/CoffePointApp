@@ -10,6 +10,9 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { useNavigation } from '@react-navigation/native';
+import RegisterForm from '../components/registerForm/RegisterForm';
+
+
 
 const RegistroScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -26,73 +29,11 @@ const RegistroScreen = () => {
 
             <Text style={styles.subtitulo}>Crear una cuenta para continuar</Text>
 
-            {/* Correo */}
-            <View style={styles.formContainer}>
-                <Text style={styles.label}>Correo</Text>
-                <View style={styles.inputContainer}>
-                    <Ionicons name="mail-outline" size={20} color="#ccc" style={{ marginRight: 10 }} />
-                    <TextInput
-                        placeholder="Ingrese su correo"
-                        placeholderTextColor="#aaa"
-                        style={styles.input}
-                        keyboardType="email-address"
-                    />
-                </View>
-            </View>
+           
 
-            {/* Nombre completo */}
-            <View style={styles.formContainer}>
-                <Text style={styles.label}>Nombre completo</Text>
-                <View style={styles.inputContainer}>
-                    <Ionicons name="person-outline" size={20} color="#ccc" style={{ marginRight: 10 }} />
-                    <TextInput
-                        placeholder="Ingrese su nombre"
-                        placeholderTextColor="#aaa"
-                        style={styles.input}
-                    />
-                </View>
-            </View>
-
-            {/* Contraseña */}
-            <View style={styles.formContainer}>
-                <Text style={styles.label}>Contraseña</Text>
-                <View style={styles.inputContainer}>
-                    <EvilIcons name="lock" size={30} color="#ccc" style={{ marginRight: 10 }} />
-                    <TextInput
-                        placeholder="Ingrese su contraseña"
-                        placeholderTextColor="#aaa"
-                        style={styles.input}
-                        secureTextEntry={!passwordVisible}
-                    />
-                    <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-                        <Ionicons name={passwordVisible ? 'eye-off-outline' : 'eye-outline'} size={24} color="#ccc" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            {/* Repetir Contraseña */}
-            <View style={styles.formContainer}>
-                <Text style={styles.label}>Repetir Contraseña</Text>
-                <View style={styles.inputContainer}>
-                    <EvilIcons name="lock" size={30} color="#ccc" style={{ marginRight: 10 }} />
-                    <TextInput
-                        placeholder="Reingrese su contraseña"
-                        placeholderTextColor="#aaa"
-                        style={styles.input}
-                        secureTextEntry={!repeatPasswordVisible}
-                    />
-                    <TouchableOpacity onPress={() => setRepeatPasswordVisible(!repeatPasswordVisible)}>
-                        <Ionicons name={repeatPasswordVisible ? 'eye-off-outline' : 'eye-outline'} size={24} color="#ccc" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            {/* Botón de registro */}
-            <View style={{ width: '80%', alignItems: 'center' }}>
-                <TouchableOpacity style={styles.registerButton}>
-                    <Text style={styles.registerButtonText}>Crear cuenta</Text>
-                </TouchableOpacity>
-            </View>
+            {/* Formulario de Registro */}
+            <RegisterForm />
+          
 
             {/* Ya tenés cuenta */}
             <View style={styles.loginRedirectContainer}>
