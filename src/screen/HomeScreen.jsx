@@ -1,34 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import BottomNavigationBar from '../components/navbar/NavBar';
 import { useNavigation } from '@react-navigation/native';
-
+import Header from '../components/header/Header';
+import WelcomeHeader from '../components/welcome/BienvenidoHeader';
+import PuntosBadge from '../components/puntos/PuntosBadge';
+import BarraPuntos from '../components/puntos/BarraPuntos';
+import PromoCarousel from '../components/promociones/PromoCarousel';
+import PromocionesCard from '../components/promociones/PromocionesCard';
 const HomeScreen = () => {
     const navigation = useNavigation();
 
     return (
-        <View style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Bienvenido a CoffeePoint ☕</Text>
-                <Text style={styles.subtitle}>¡Disfrutá nuestras promociones y beneficios!</Text>
+        <>
+            {/* Header fijo arriba */}
+            <Header navigation={navigation} />
+
+            <View style={styles.container}>
+                {/* Fila: Bienvenida + Puntos */}
+                <View style={styles.headerRow}>
+                    <WelcomeHeader username="Daniel" />
+                    <PuntosBadge puntos={2} />
+                </View>
+
+                {/* Barra de progreso de puntos */}
+                <BarraPuntos puntosActuales={2} puntosObjetivo={5} />
+
+                {/* Carrusel de promociones */}
+                <PromoCarousel navigation={navigation} />
+
+                <View style={styles.content}>
+                    <PromocionesCard navigation={navigation}/>
+                </View>
+                {/* Barra de navegación inferior */}
+                <BottomNavigationBar navigation={navigation} />
             </View>
-
-            {/* Imagen decorativa (opcional) */}
-            <Image
-                source={require('../../assets/logo/CoffePoint.png')}
-                style={styles.image}
-            />
-
-            {/* Contenido principal */}
-            <View style={styles.content}>
-                <Text style={styles.sectionTitle}>Promociones destacadas</Text>
-                {/* Acá irían las cards de promociones */}
-            </View>
-
-            {/* Navigation bar */}
-            <BottomNavigationBar navigation={navigation} />
-        </View>
+        </>
     );
 };
 
@@ -37,25 +44,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f4f1ec',
         paddingHorizontal: 20,
-        paddingTop: 60,
+        paddingTop: 20,
     },
-    header: {
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 20,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#3e2723',
-    },
-    subtitle: {
-        fontSize: 16,
-        color: '#6d4c41',
-    },
-    image: {
-        width: '100%',
-        height: 200,
-        resizeMode: 'contain',
-        marginVertical: 20,
     },
     content: {
         flex: 1,
