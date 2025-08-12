@@ -3,41 +3,59 @@ import React, { useState } from 'react'
 import { EvilIcons, Ionicons } from '@expo/vector-icons'
 import { Controller, useForm } from 'react-hook-form'
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { getUserFn } from '../../service/userServiceApi';
+import { getUserFn, postUserFn } from '../../service/userServiceApi';
+import { showMessage } from 'react-native-flash-message';
+import { useNavigation } from '@react-navigation/native';
 
 export default function RegisterForm() {
   // Estados para visibilidad de contraseñas
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [repeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
-
+  const naviagation = useNavigation();
   //RHF---------------------------------
   const { control, handleSubmit: onSubmitRHF, formState: { errors }, reset, setError, watch, setValue } = useForm({
     defaultValues: {
       email: '',
-      fullName: '',
-      password: '',
+      nombre: '',
+      contraseña: '',
       confirmPassword: ''
     },
     mode: 'onChange'
   })
   //TQUERY---------------------------------
-const {mutate: postUsuario, isLoading, isError, error, isPending} = useMutation({
-  mutationFn: "postUserFn",
-  onSuccess: (data)=>{},
-  onError: (error)=>{}
-})
+  const { mutate: postUsuario, isLoading, isError, error, isPending } = useMutation({
+    mutationFn: postUserFn,
+    onSuccess: (data) => {
+      //mostramos el mensaje de exito
+      showMessage({
+        message: '¡Éxito!',
+        description: 'Usuario registrado correctamente. Revisa tu email para verificar tu cuenta.',
+        type: 'success',
+        backgroundColor: '#556B2F',
+        color: '#fff',
+        icon: 'success',
+        duration: 4000,
+        onPress: () => Linking.openURL('mailto:')
+      })
+      //liamos el formulario
+      reset();
 
-const {data: usuarios} = useQuery({
-  queryKey: ['productos'],
-  queryFn: getUserFn
-})
+      //ahora redirigimos al usuario a la pantalla para ignresar el codigo de verificaicon
+      setTimeout(()=>{
+        //navemgos a la pantalla de verificaion de correo
+        //y le agregamos un timempo para que cambide pantalla
+        naviagation.navigate('VerificarCorreo');
 
+      },3000)
+    },
+    onError: (error) => { }
+  })
 
-
-console.log(usuarios);
   //HANDLERS
   const handleSubmit = (data) => {
-    console.log(data);
+    console.log("Datos del formulario:", data);
+    postUsuario(data);
+
   }
 
   return (
@@ -80,7 +98,7 @@ console.log(usuarios);
         <Text style={styles.label}>Nombre completo</Text>
         <Controller
           control={control}
-          name='fullName'
+          name='nombre'
           rules={{
             required: 'El nombre completo es obligatorio',
             minLength: { value: 3, message: 'El nombre debe tener al menos 3 caracteres' },
@@ -100,7 +118,7 @@ console.log(usuarios);
             </View>
           )}
         />
-        {errors.fullName && <Text style={styles.errorText}>{errors.fullName.message}</Text>}
+        {errors.nombre && <Text style={styles.errorText}>{errors.nombre.message}</Text>}
       </View>
 
       {/* Contraseña */}
@@ -108,7 +126,7 @@ console.log(usuarios);
         <Text style={styles.label}>Contraseña</Text>
         <Controller
           control={control}
-          name='password'
+          name='contraseña'
           rules={{
             required: 'La contraseña es obligatoria',
             minLength: { value: 6, message: 'La contraseña debe tener al menos 6 caracteres' },
@@ -132,7 +150,7 @@ console.log(usuarios);
             </View>
           )}
         />
-        {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+        {errors.contraseña && <Text style={styles.errorText}>{errors.contraseña.message}</Text>}
       </View>
 
       {/* Repetir Contraseña */}
@@ -143,7 +161,7 @@ console.log(usuarios);
           name='confirmPassword'
           rules={{
             required: 'Debe repetir la contraseña',
-            validate: value => value === watch('password') || 'Las contraseñas no coinciden'
+            validate: value => value === watch('contraseña') || 'Las contraseñas no coinciden'
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <View style={styles.inputContainer}>

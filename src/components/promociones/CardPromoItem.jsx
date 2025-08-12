@@ -1,14 +1,21 @@
+
+
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
 const CardPromoItem = ({ titulo, descripcion, precio, imagen }) => {
     return (
         <View style={styles.card}>
-            <Image source={imagen} style={styles.image} />
+            {/* ✅ Usar { uri: imagen } para URLs remotas */}
+            <Image 
+                source={{ uri: imagen }} 
+                style={styles.image}
+                resizeMode="cover" // ✅ Agregar para mejor visualización
+            />
             <View style={styles.overlay} />
-
+            
             <Text style={styles.precio}>${precio}</Text>
-
+            
             <View style={styles.textContainer}>
                 <Text style={styles.descripcion}>
                     {descripcion ? descripcion.toUpperCase() : ''}
@@ -20,6 +27,8 @@ const CardPromoItem = ({ titulo, descripcion, precio, imagen }) => {
         </View>
     );
 };
+
+// ... resto del código igual
 
 const styles = StyleSheet.create({
     card: {

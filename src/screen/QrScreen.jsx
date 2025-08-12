@@ -3,8 +3,11 @@ import { View, ScrollView, StyleSheet, Text } from "react-native";
 import Navbar from "../components/navbar/NavBar";
 import Header from "../components/header/Header";
 import MembresiaCarousel from "../components/membresia/MembresiaCarousel";
+import { useAuthSessionStore } from "../store/authSessionStore";
 
 const QrScreen = () => {
+  const { user} = useAuthSessionStore();
+  console.log(user);
   return (
     <View style={styles.container}>
       <Header />

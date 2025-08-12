@@ -8,10 +8,13 @@ import PuntosBadge from '../components/puntos/PuntosBadge';
 import BarraPuntos from '../components/puntos/BarraPuntos';
 import PromoCarousel from '../components/promociones/PromoCarousel';
 import PromocionesCard from '../components/promociones/PromocionesCard';
+import { useAuthSessionStore } from '../store/authSessionStore';
 
 //LAZY LOAD ---> CARGA PEREZOSA
 //CASCADIE CODE --> CARGA DE ENTRADA
 const HomeScreen =  () => {
+    const { user } = useAuthSessionStore();
+    console.log(user)
     const navigation = useNavigation();
 
     return (
@@ -22,12 +25,12 @@ const HomeScreen =  () => {
             <View style={styles.container}>
                 {/* Fila: Bienvenida + Puntos */}
                 <View style={styles.headerRow}>
-                    <WelcomeHeader username="Daniel" />
-                    <PuntosBadge puntos={2} />
+                    <WelcomeHeader username={user.nombre} />
+                    <PuntosBadge puntos={user.puntos} />
                 </View>
 
                 {/* Barra de progreso de puntos */}
-                <BarraPuntos puntosActuales={2} puntosObjetivo={5} />
+                <BarraPuntos puntosActuales={user.puntos} puntosObjetivo={5} />
 
                 {/* Carrusel de promociones */}
                 <PromoCarousel navigation={navigation} />

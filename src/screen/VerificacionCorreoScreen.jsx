@@ -13,16 +13,62 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { verifyUserFn } from '../service/userServiceApi';
+import { showMessage } from 'react-native-flash-message';
 
 const VerificarCodigoScreen = () => {
+
+    //EStados---------------------------------
     const navigation = useNavigation();
     const [code, setCode] = useState(['', '', '', '']);
+
     const inputs = useRef([]);
+    //RHF------------------------------------
+    const { control, handleSubmit: onSubmitRHF, formState: { errors }, reset, setError, watch, setValue } = useForm({
+        defaultValues: {
+        }
+    });
+    //TQUERY----------------------------------
+
+    //tequery para enviar el verificar el codigo
+    const { mutate: sendCode, isLoading, isError, error, isPending } = useMutation({
+        mutationFn: verifyUserFn,
+        onSuccess: () => {
+            //mostramos el mensaje de exito
+            showMessage({
+                message: '¡Éxito!',
+                description: 'Cuenta verificada correctamente. Ahora puedes iniciar sesión.',
+                type: 'success',
+                backgroundColor: '#556B2F',
+                color: '#fff',
+                icon: 'success',
+                duration: 4000,
+                onPress: () => Linking.openURL('mailto:')
+            })
+            //liamos el formulario
+            reset();
+
+            //ahora redirigimos al usuario a la pantalla para ignresar el codigo de verificaicon
+            setTimeout(() => {
+                //navemgos a la pantalla de verificaion de correo
+                //y le agregamos un timempo para que cambide pantalla
+                navigation.navigate('Login');
+
+            }, 3000)
+        },
+        onError: () => {
+
+        }
+    })
+
 
     const handleChange = (text, index) => {
         const newCode = [...code];
         newCode[index] = text;
         setCode(newCode);
+        console.log(code);
 
         if (text && index < 3) {
             inputs.current[index + 1].focus();
@@ -31,7 +77,8 @@ const VerificarCodigoScreen = () => {
 
     const handleVerify = () => {
         if (code.every((digit) => digit !== '')) {
-            navigation.navigate('CambiarClave');
+            const codeString = code.join('');
+            sendCode(codeString);
         } else {
             Alert.alert('Código incompleto', 'Por favor ingresá los 4 dígitos del código.');
         }
@@ -81,13 +128,13 @@ const VerificarCodigoScreen = () => {
                 </View>
 
                 {/* Reenviar */}
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=> {navigation.navigate('SendEmail')}}>
                     <Text style={styles.resend}>¿No recibiste el código? Reenviar</Text>
                 </TouchableOpacity>
 
                 {/* Botón verificar */}
-                <TouchableOpacity style={styles.verifyButton} onPress={handleVerify}>
-                    <Text style={styles.verifyButtonText}>Verificar</Text>
+                <TouchableOpacity style={styles.verifyButton} onPress={onSubmitRHF(handleVerify)}>
+                    <Text style={styles.verifyButtonText}>{isPending ? 'Verificando...' : 'Verificar'}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </KeyboardAvoidingView>

@@ -11,78 +11,31 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
+import LoginForm from '../components/loginForm/LoginForm';
 
 const LoginScreen = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigation = useNavigation();
 
     return (
+        
+
         <View style={styles.container}>
             {/* Logo */}
             <Image
                 source={require('../../assets/logo/CoffePoint.png')}
                 style={styles.logo}
-            />
+                />
 
             {/* Nombre App */}
             <Text style={styles.nombreApp}>COFFE<Text style={{ fontWeight: '400' }}>POINT</Text></Text>
-
             {/* Contenido subido */}
             <View style={styles.contentContainer}>
                 <Text style={styles.subtitulo}>Hola, inicie sesión para continuar</Text>
 
-                {/* Input CORREO */}
-                <View style={styles.formContainer}>
-                    <Text style={styles.label}>Correo</Text>
-                    <View style={styles.inputContainer}>
-                        <Ionicons name="mail-outline" size={20} color="#ccc" style={{ marginRight: 10 }} />
-                        <TextInput
-                            placeholder="Ingrese su correo"
-                            placeholderTextColor="#aaa"
-                            style={styles.input}
-                            keyboardType="email-address"
-                        />
-                    </View>
-                </View>
-
-                {/* Input CONTRASEÑA */}
-                <View style={styles.formContainer}>
-                    <Text style={styles.label}>Contraseña</Text>
-                    <View style={styles.inputContainer}>
-                        <EvilIcons name="lock" size={30} color="#ccc" style={{ marginRight: 10 }} />
-                        <TextInput
-                            placeholder="Ingrese su clave"
-                            placeholderTextColor="#aaa"
-                            style={styles.input}
-                            secureTextEntry={!passwordVisible}
-                        />
-                        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-                            <Ionicons
-                                name={passwordVisible ? 'eye-off-outline' : 'eye-outline'}
-                                size={24}
-                                color="#ccc"
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                {/* Olvidé contraseña y Login */}
-                <View style={styles.olvideClaveContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('RecuperarClave')}>
-                        <Text style={styles.olvideClaveText}>¿Olvidaste tu contraseña?</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.loginButton}
-                        onPress={() => navigation.navigate('MainTabs')} // ✅ esto es lo correcto
-                    >
-                        <Text style={styles.loginText}>Login</Text>
-                    </TouchableOpacity>
-
-                    <View style={styles.continue}>
-                        <Text style={styles.socialDivider}>o continuar con una cuenta social</Text>
-                    </View>
-                </View>
+                {/* Formulario del Login */}
+                <LoginForm/>
 
                 {/* Botón Google */}
                 <View style={styles.googleButtonContainer}>
@@ -114,6 +67,7 @@ const LoginScreen = () => {
                 </View>
             </View>
         </View>
+                            
     );
 };
 

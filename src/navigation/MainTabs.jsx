@@ -21,6 +21,7 @@ const MainTabs = () => {
                 return <RegaloScreen />;
             case 'User':
                 return <UserScreen />;
+                
             default:
                 return <HomeScreen />;
         }
